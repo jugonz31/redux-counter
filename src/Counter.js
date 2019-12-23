@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 
 const containerStyle = {
     display: 'flex'
@@ -10,34 +10,21 @@ const buttonStyle = {
     height: '40px'
 }
 
-class Counter extends Component {
-    addOne = () => {
-        this.props.dispatch({ type: 'ADD_ONE' });
-    }
-
-    minusOne = () => {
-        this.props.dispatch({ type: 'MINUS_ONE' });
-    }
-
-    render() {
-        return (
-            <div className="App" >
-                <header className="App-header">
-                    <h1>{this.props.number}</h1>
-                    <div style={containerStyle}>
-                        <button type="button" style={buttonStyle} onClick={this.minusOne}>-</button>
-                        <button type="button" style={buttonStyle} onClick={this.addOne}>+</button>
-                    </div>
-                </header>
-            </div>
-        );
-    }
+const Counter = () => {
+    const dispatcher = useDispatch()
+    const counter = useSelector(state => state.number)
+    
+    return (
+        <div className="App" >
+            <header className="App-header">
+                <h1>{counter}</h1>
+                <div style={containerStyle}>
+                    <button type="button" style={buttonStyle} onClick={() => { dispatcher({ type: 'MINUS_ONE' }); } }>-</button>
+                    <button type="button" style={buttonStyle} onClick={() => { dispatcher({ type: 'ADD_ONE' }); } }>+</button>
+                </div>
+            </header>
+        </div>
+    );
 }
 
-const mapStateToProps = (state) => {
-    return {
-      number: state.number
-    };
-  }
-  
-  export default connect(mapStateToProps)(Counter);
+export default Counter;
